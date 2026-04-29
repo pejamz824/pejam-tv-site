@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEJAM TV — Nouvèl Ayiti ak Mond lan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root { --rouge:#E8201A; --nwa:#0D0D0D; --blan:#F4F0E8; --ble:#1A5BC4; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--blan);color:var(--nwa);font-family:'Source Sans 3',sans-serif;overflow-x:hidden}
+
+  /* NOTIF BAR */
+  .notif-bar{background:var(--rouge);color:white;padding:8px 16px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px}
+  .nb-btn{background:white;color:var(--rouge);border:none;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
+  .nb-btn:hover{background:var(--nwa);color:white}
+  .nb-x{background:transparent;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.4);padding:3px 9px;border-radius:20px;font-size:11px;cursor:pointer}
+
+  /* HEADER */
+  header{background:var(--nwa);position:sticky;top:0;z-index:100;border-bottom:3px solid var(--rouge)}
+  .header-top{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:68px}
+  /* STICKY ABÒNE BAR POU MOBIL */
+  .sticky-abone{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;padding:10px 16px 14px;background:linear-gradient(transparent,rgba(0,0,0,0.97));backdrop-filter:blur(6px)}
+  .sticky-abone button{width:100%;padding:15px;background:var(--rouge);color:white;border:2px solid rgba(255,255,255,0.6);border-radius:6px;font-size:16px;font-weight:900;letter-spacing:3px;text-transform:uppercase;cursor:pointer;font-family:"Source Sans 3",sans-serif;animation:pulse-btn 2s infinite;transition:all .2s}
+  .sticky-abone button:active{background:white;color:var(--rouge)}
+  .logo{cursor:pointer}
+  .logo-main{font-family:'Bebas Neue',sans-serif;font-size:46px;color:white;letter-spacing:4px;line-height:1}
+  .logo-main span{color:var(--rouge)}
+  .logo-sub{font-size:9px;letter-spacing:5px;color:#555;font-weight:300;text-transform:uppercase}
+  .header-actions{display:flex;align-items:center;gap:10px}
+
+  /* LANG */
+  .lang-sw{display:flex;gap:2px;background:#1a1a1a;border-radius:4px;padding:3px}
+  .lang-btn{background:none;border:none;color:#666;font-size:11px;font-weight:700;padding:4px 9px;border-radius:3px;cursor:pointer;letter-spacing:1px;transition:all .2s}
+  .lang-btn.active{background:var(--rouge);color:white}
+  .lang-btn:hover:not(.active){color:white}
+
+  /* BTNS */
+  .btn-google{display:flex;align-items:center;gap:8px;background:white;color:#333;border:none;padding:8px 16px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+  .btn-google:hover{background:#f0f0f0;transform:translateY(-1px)}
+  .btn-google svg{width:16px;height:16px;flex-shrink:0}
+  .btn-abone{background:var(--rouge);color:white;border:2px solid white;padding:10px 24px;border-radius:4px;font-size:14px;font-weight:900;cursor:pointer;letter-spacing:2px;transition:all .2s;text-transform:uppercase;box-shadow:0 0 0 0 rgba(232,32,26,0.7);animation:pulse-btn 2s infinite}
+  .btn-abone:hover{background:white;color:var(--rouge);transform:translateY(-2px);box-shadow:0 4px 20px rgba(232,32,26,0.5);animation:none}
+  @keyframes pulse-btn{0%{box-shadow:0 0 0 0 rgba(255,255,255,0.5)}70%{box-shadow:0 0 0 10px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+
+  /* USER BADGE */
+  .user-badge{display:none;align-items:center;gap:8px;background:#1a1a1a;border-radius:4px;padding:6px 12px;cursor:pointer}
+  .user-badge.visible{display:flex}
+  .user-avatar{width:28px;height:28px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white}
+  .user-name{color:#ddd;font-size:13px}
+
+  /* NAV */
+  nav{background:#111;padding:0 32px;display:flex;overflow-x:auto;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  .nav-item{color:#777;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px 18px;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;user-select:none}
+  .nav-item:hover{color:#ccc}
+  .nav-item.active{color:white;border-bottom-color:var(--rouge)}
+
+  /* BREAKING */
+  .breaking{background:var(--rouge);padding:9px 32px;display:flex;align-items:center;gap:16px;overflow:hidden}
+  .br-label{background:white;color:var(--rouge);font-size:10px;font-weight:900;letter-spacing:2px;padding:3px 10px;border-radius:2px;white-space:nowrap;flex-shrink:0}
+  .ticker-wrap{overflow:hidden;flex:1}
+  .br-text{color:white;font-size:13px;font-weight:600;white-space:nowrap;display:inline-block;animation:ticker 28s linear infinite}
+  @keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+
+  /* MAIN */
+  #mainContent{max-width:1200px;margin:0 auto;padding:0 32px}
+
+  /* HERO */
+  .hero{display:grid;grid-template-columns:1fr 360px;gap:24px;margin:32px 0 0}
+  .hero-main{position:relative;cursor:pointer;overflow:hidden;border-radius:3px}
+  .hero-main img{width:100%;height:500px;object-fit:cover;display:block;transition:transform .5s}
+  .hero-main:hover img{transform:scale(1.03)}
+  .hero-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.92));padding:60px 28px 28px}
+  .hero-cat{display:inline-block;background:var(--rouge);color:white;font-size:10px;font-weight:900;letter-spacing:2px;padding:3px 10px;margin-bottom:10px;text-transform:uppercase}
+  .hero-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:white;line-height:1.25;margin-bottom:10px}
+  .hero-meta{color:#bbb;font-size:12px;display:flex;gap:14px}
+
+  /* SIDEBAR */
+  .hero-sidebar{border-left:1px solid #ddd;padding-left:24px;display:flex;flex-direction:column}
+  .sa{padding:14px 0;border-bottom:1px solid #e8e3dc;cursor:pointer;display:grid;grid-template-columns:85px 1fr;gap:12px;align-items:start;transition:opacity .2s}
+  .sa:hover{opacity:.7}
+  .sa:last-child{border-bottom:none}
+  .sa img{width:85px;height:62px;object-fit:cover;border-radius:2px}
+  .sa-cat{font-size:9px;font-weight:900;letter-spacing:2px;color:var(--rouge);text-transform:uppercase;margin-bottom:4px}
+  .sa-title{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;line-height:1.3}
+  .sa-time{font-size:11px;color:#888;margin-top:4px}
+
+  /* SECTION HEADER */
+  .sec-hdr{display:flex;align-items:center;gap:16px;margin:40px 0 20px}
+  .sec-hdr h2{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;white-space:nowrap}
+  .sec-line{flex:1;height:1px;background:linear-gradient(to right,var(--nwa),transparent)}
+
+  /* NEWS GRID */
+  .news-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:40px}
+  .news-card{cursor:pointer;overflow:hidden;border-radius:2px;transition:transform .25s}
+  .news-card:hover{transform:translateY(-4px)}
+  .news-card.hidden{display:none}
+  .news-card img{width:100%;height:195px;object-fit:cover;display:block}
+  .nc-body{padding:14px 0}
+  .nc-cat{font-size:9px;font-weight:900;letter-spacing:2px;color:var(--rouge);text-transform:uppercase;margin-bottom:7px}
+  .nc-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;line-height:1.3;margin-bottom:8px}
+  .nc-excerpt{font-size:13px;color:#555;line-height:1.6;margin-bottom:10px}
+  .nc-meta{font-size:11px;color:#888;display:flex;gap:10px}
+  .dot{color:#ccc}
+  .empty-msg{display:none;text-align:center;padding:60px 20px;color:#888;font-size:15px;grid-column:1/-1}
+  .empty-msg .ei{font-size:40px;display:block;margin-bottom:12px}
+
+  /* MODAL */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:1000;align-items:center;justify-content:center}
+  .modal-overlay.active{display:flex}
+  .modal{background:white;width:440px;max-width:95vw;border-radius:4px;overflow:hidden;animation:slideUp .3s ease}
+  .modal-hdr{background:var(--nwa);padding:28px 32px;position:relative}
+  .modal-logo{font-family:'Bebas Neue',sans-serif;font-size:30px;color:white;letter-spacing:4px;margin-bottom:6px}
+  .modal-logo span{color:var(--rouge)}
+  .modal-hdr p{color:#888;font-size:13px}
+  .modal-x{position:absolute;top:14px;right:16px;background:none;border:none;color:#666;font-size:22px;cursor:pointer;transition:color .2s;line-height:1}
+  .modal-x:hover{color:white}
+  .modal-bdy{padding:28px 32px}
+  .modal-t{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;margin-bottom:6px}
+  .modal-d{color:#666;font-size:13px;margin-bottom:22px;line-height:1.5}
+  .btn-g-big{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;background:white;border:2px solid #ddd;padding:13px 20px;border-radius:4px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;margin-bottom:16px;color:#333;font-family:'Source Sans 3',sans-serif}
+  .btn-g-big:hover{border-color:#aaa;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+  .divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:#aaa;font-size:12px}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:#eee}
+  .fg{margin-bottom:13px}
+  .fg input{width:100%;border:1.5px solid #ddd;padding:11px 14px;border-radius:4px;font-size:14px;font-family:'Source Sans 3',sans-serif;transition:border-color .2s;outline:none}
+  .fg input:focus{border-color:var(--rouge)}
+  .notif-opts{background:#f8f5f0;border-radius:4px;padding:16px;margin:16px 0}
+  .notif-opts h4{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;color:#333}
+  .nopt{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:13px;cursor:pointer}
+  .nopt input[type=checkbox]{accent-color:var(--rouge);width:15px;height:15px}
+  .btn-sub{width:100%;background:var(--rouge);color:white;border:none;padding:13px;border-radius:4px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+  .btn-sub:hover{background:#c01010}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:28px;right:28px;background:var(--nwa);color:white;padding:16px 22px;border-radius:4px;border-left:4px solid var(--rouge);font-size:14px;display:flex;align-items:center;gap:12px;z-index:2000;transform:translateY(100px);opacity:0;transition:all .35s ease;max-width:300px}
+  .toast.show{transform:translateY(0);opacity:1}
+
+  /* FOOTER */
+  footer{background:var(--nwa);color:#777;padding:40px 32px 24px;margin-top:60px}
+  .footer-grid{max-width:1200px;margin:0 auto 32px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+  .fl{font-family:'Bebas Neue',sans-serif;font-size:34px;color:white;letter-spacing:4px;margin-bottom:10px}
+  .fl span{color:var(--rouge)}
+  .fd{font-size:13px;line-height:1.6;margin-bottom:18px}
+  .footer-col h4{color:white;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;font-weight:700}
+  .footer-col a{display:block;color:#777;text-decoration:none;font-size:13px;margin-bottom:8px;transition:color .2s;cursor:pointer}
+  .footer-col a:hover{color:white}
+  .footer-btm{max-width:1200px;margin:0 auto;border-top:1px solid #222;padding-top:18px;display:flex;justify-content:space-between;font-size:12px}
+
+  @keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+  @media(max-width:820px){
+    .sticky-abone{display:block}
+    body{padding-bottom:80px}
+    .hero{grid-template-columns:1fr}
+    .hero-sidebar{display:none}
+    .news-grid{grid-template-columns:1fr 1fr}
+    .footer-grid{grid-template-columns:1fr 1fr}
+    .header-top{padding:0 16px}
+    nav{padding:0 16px}
+    #mainContent{padding:0 16px}
+    .breaking{padding:9px 16px}
+    .hero-title{font-size:24px}
+    .btn-google .gl{display:none}
+  }
+  @media(max-width:480px){
+    .news-grid{grid-template-columns:1fr}
+    .logo-main{font-size:34px}
+  }
+
+  /* ===== PRICING SECTION ===== */
+  .pricing-section{background:var(--nwa);padding:60px 32px;margin-top:60px}
+  .pricing-inner{max-width:1000px;margin:0 auto}
+  .pricing-hdr{text-align:center;margin-bottom:40px}
+  .pricing-hdr h2{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:3px;color:white;margin-bottom:8px}
+  .pricing-hdr h2 span{color:var(--rouge)}
+  .pricing-hdr p{color:#888;font-size:14px}
+  .pricing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:48px}
+  .plan-card{border:1px solid #222;border-radius:6px;padding:28px 24px;transition:all .3s;position:relative;background:#111}
+  .plan-card:hover{border-color:#444;transform:translateY(-4px)}
+  .plan-card.featured{border-color:var(--rouge);background:#1a0a0a}
+  .plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--rouge);color:white;font-size:10px;font-weight:900;letter-spacing:2px;padding:4px 14px;border-radius:20px;white-space:nowrap}
+  .plan-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:white;margin-bottom:4px}
+  .plan-price{font-family:'Playfair Display',serif;font-size:38px;font-weight:900;color:white;line-height:1;margin:12px 0 4px}
+  .plan-price span{font-size:14px;font-weight:400;color:#888;font-family:'Source Sans 3',sans-serif}
+  .plan-desc{color:#666;font-size:12px;margin-bottom:20px;line-height:1.5}
+  .plan-features{list-style:none;margin-bottom:24px}
+  .plan-features li{color:#aaa;font-size:13px;padding:6px 0;border-bottom:1px solid #1e1e1e;display:flex;align-items:center;gap:8px}
+  .plan-features li::before{content:'✓';color:var(--rouge);font-weight:900;font-size:12px;flex-shrink:0}
+  .plan-features li.off{color:#444}
+  .plan-features li.off::before{content:'✕';color:#333}
+  .btn-plan{width:100%;padding:12px;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .2s;font-family:'Source Sans 3',sans-serif;border:none}
+  .btn-plan-free{background:transparent;color:#888;border:1px solid #333}
+  .btn-plan-free:hover{border-color:#888;color:white}
+  .btn-plan-pay{background:var(--rouge);color:white}
+  .btn-plan-pay:hover{background:#c01010}
+  .btn-plan-vip{background:white;color:var(--nwa)}
+  .btn-plan-vip:hover{background:#e0e0e0}
+
+  /* PAYMENT SECTION */
+  .pay-section{border-top:1px solid #1e1e1e;padding-top:40px}
+  .pay-hdr{text-align:center;margin-bottom:28px}
+  .pay-hdr h3{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:white;margin-bottom:6px}
+  .pay-hdr p{color:#666;font-size:13px}
+  .pay-methods{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:600px;margin:0 auto}
+  .pay-card{background:#161616;border:1px solid #222;border-radius:6px;padding:20px 24px;transition:all .2s;cursor:pointer}
+  .pay-card:hover{border-color:#444;background:#1c1c1c}
+  .pay-card-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .pay-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+  .pay-icon.moncash{background:#FFD700;color:#000}
+  .pay-icon.card{background:#1a5bc4;color:white}
+  .pay-name{color:white;font-weight:700;font-size:15px}
+  .pay-sub{color:#666;font-size:11px;margin-top:2px}
+  .pay-number{background:#0d0d0d;border:1px solid #2a2a2a;border-radius:4px;padding:10px 14px;font-size:14px;font-family:'Source Sans 3',sans-serif;color:#ddd;letter-spacing:1px}
+  .pay-number strong{color:white;font-size:16px;letter-spacing:2px}
+  .pay-copy-btn{margin-top:8px;background:transparent;border:1px solid #333;color:#888;font-size:11px;padding:4px 10px;border-radius:3px;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+  .pay-copy-btn:hover{border-color:#888;color:white}
+  .pay-note{text-align:center;margin-top:20px;color:#555;font-size:12px;line-height:1.6}
+
+  @media(max-width:700px){
+    .pricing-grid{grid-template-columns:1fr}
+    .pay-methods{grid-template-columns:1fr}
+    .pricing-section{padding:40px 16px}
+  }
+
+  /* ADMIN PANEL */
+  #adminPanel{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.97);z-index:9999;overflow-y:auto}
+  .adm-box{max-width:480px;margin:40px auto;padding:0 16px 40px}
+  .adm-card{background:#111;border-radius:8px;overflow:hidden;border:1px solid #222}
+  .adm-hdr{background:var(--rouge);padding:20px 24px;display:flex;align-items:center;justify-content:space-between}
+  .adm-logo{font-family:'Bebas Neue',sans-serif;font-size:26px;color:white;letter-spacing:3px}
+  .adm-sub{color:rgba(255,255,255,0.6);font-size:10px;letter-spacing:3px;margin-top:2px}
+  .adm-x{background:rgba(255,255,255,0.15);border:none;color:white;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;transition:all .2s}
+  .adm-x:hover{background:rgba(255,255,255,0.3)}
+  .adm-body{padding:28px}
+  .adm-t{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:white;margin-bottom:6px}
+  .adm-d{color:#666;font-size:13px;margin-bottom:22px}
+  .adm-label{color:#888;font-size:10px;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:6px}
+  .adm-input{width:100%;background:#0d0d0d;border:1.5px solid #2a2a2a;color:white;padding:11px 14px;border-radius:4px;font-size:14px;outline:none;font-family:'Source Sans 3',sans-serif;transition:border-color .2s;box-sizing:border-box}
+  .adm-input:focus{border-color:var(--rouge)}
+  .adm-textarea{width:100%;background:#0d0d0d;border:1.5px solid #2a2a2a;color:white;padding:11px 14px;border-radius:4px;font-size:14px;outline:none;font-family:'Source Sans 3',sans-serif;resize:vertical;min-height:100px;box-sizing:border-box}
+  .adm-textarea:focus{border-color:var(--rouge)}
+  .adm-fg{margin-bottom:16px}
+  .adm-btn{width:100%;background:var(--rouge);color:white;border:none;padding:14px;border-radius:4px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Source Sans 3',sans-serif;letter-spacing:1px;transition:all .2s}
+  .adm-btn:hover{background:#c01010}
+  .adm-btn:disabled{background:#444;cursor:not-allowed}
+  .adm-err{color:#ff6b6b;font-size:12px;margin-top:8px;display:none}
+  .adm-result{margin-top:14px;padding:12px 14px;border-radius:4px;font-size:13px;display:none;line-height:1.5}
+  .adm-result.ok{background:#0a2a0a;border:1px solid #1a5a1a;color:#4ade80}
+  .adm-result.err{background:#2a0a0a;border:1px solid #5a1a1a;color:#f87171}
+  .adm-divider{border:none;border-top:1px solid #1e1e1e;margin:24px 0}
+  .adm-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+  .adm-stat{background:#0d0d0d;border:1px solid #1e1e1e;border-radius:6px;padding:14px;text-align:center}
+  .adm-stat-n{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--rouge);letter-spacing:1px}
+  .adm-stat-l{color:#666;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+</style>
+
+  <!-- OneSignal Push Notifications -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
+  
+</head>
+<body>
+
+<!-- Notif Bar -->
+<div class="notif-bar" id="notifBar">
+  🔔 <span id="notifText">Aktive notifikasyon PEJAM TV — pa rate okenn nouvèl!</span>
+  <button class="nb-btn" onclick="activateNotif()">Aktive</button>
+  <button class="nb-x" onclick="document.getElementById('notifBar').style.display='none'">✕</button>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="header-top">
+    <div class="logo" onclick="filterCat('tout',null)" ondblclick="adminTap()">
+      <div class="logo-main">PEJAM<span> TV</span></div>
+      <div class="logo-sub">Nouvèl Ayiti ak Mond lan</div>
+    </div>
+    <div class="header-actions">
+      <div class="lang-sw">
+        <button class="lang-btn active" onclick="setLang('ht',this)">KR</button>
+        <button class="lang-btn" onclick="setLang('fr',this)">FR</button>
+        <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+      </div>
+      <div class="user-badge" id="userBadge">
+        <div class="user-avatar" id="userInitial">J</div>
+        <span class="user-name" id="userName">Jean</span>
+      </div>
+      <button class="btn-google" id="btnGoogle" onclick="openModal('login')">
+        <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        <span class="gl">Konekte ak Google</span>
+      </button>
+      <button class="btn-abone" id="btnAbone" onclick="document.getElementById('pricingSection').scrollIntoView({behavior:'smooth'})">Abòne</button>
+    </div>
+  </div>
+
+  <!-- NAV — chak bouton gen data-cat pou filtraj -->
+  <nav id="mainNav">
+    <div class="nav-item active" data-cat="tout">Tout</div>
+    <div class="nav-item" data-cat="ayiti">Ayiti</div>
+    <div class="nav-item" data-cat="politik">Politik</div>
+    <div class="nav-item" data-cat="ekonomi">Ekonomi</div>
+    <div class="nav-item" data-cat="sante">Sante</div>
+    <div class="nav-item" data-cat="espo">Espò</div>
+    <div class="nav-item" data-cat="kilti">Kilti</div>
+    <div class="nav-item" data-cat="teknoloji">Teknoloji</div>
+    <div class="nav-item" data-cat="karayib">Karayib</div>
+    <div class="nav-item" data-cat="amerik">Amerik</div>
+    <div class="nav-item" data-cat="ewop">Ewòp</div>
+    <div class="nav-item" data-cat="afrik">Afrik</div>
+  </nav>
+</header>
+
+<!-- Breaking -->
+<div class="breaking">
+  <div class="br-label">🔴 Ijan</div>
+  <div class="ticker-wrap">
+    <div class="br-text">Premye Minis anonse plan ekonomik 2026 &bull; Les Grenadiers klasifye pou Copa Amerik &bull; ONU voye èd imèjan nan sid peyi a &bull; Bours mondyal monte 3yèm jounen konsekitif &bull; Akò komèsyal Ayiti-Kanada siyen &bull; Nouvo Sant Sante louvri Cap-Haïtien &bull; AI detekte kansè 95% nan MIT &bull;</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="mainContent">
+
+  <section class="hero" id="heroSection">
+    <div class="hero-main">
+      <img src="https://picsum.photos/seed/haiti1/800/500" alt="Hero">
+      <div class="hero-overlay">
+        <div class="hero-cat">Politik</div>
+        <div class="hero-title">Gouvènman an anonse yon nouvo plan rekonstriksyon nasyonal pou 2026–2030</div>
+        <div class="hero-meta"><span>Marie Desrosiers</span><span>•</span><span>Jodi a, 9:30</span><span>•</span><span>5 min lekti</span></div>
+      </div>
+    </div>
+    <div class="hero-sidebar">
+      <div class="sa"><img src="https://picsum.photos/seed/eco1/200/150" alt=""><div><div class="sa-cat">Ekonomi</div><div class="sa-title">Monnen Ayisyen estabilize apre entèvansyon BRH</div><div class="sa-time">2 è de tan</div></div></div>
+      <div class="sa"><img src="https://picsum.photos/seed/sport1/200/150" alt=""><div><div class="sa-cat">Espò</div><div class="sa-title">Les Grenadiers: viktwa 3-1 kont Jamayik</div><div class="sa-time">3 è de tan</div></div></div>
+      <div class="sa"><img src="https://picsum.photos/seed/health1/200/150" alt=""><div><div class="sa-cat">Sante</div><div class="sa-title">MSF ouvri nouvo sant sante nan Pòtoprens</div><div class="sa-time">5 è de tan</div></div></div>
+      <div class="sa"><img src="https://picsum.photos/seed/edu1/200/150" alt=""><div><div class="sa-cat">Edikasyon</div><div class="sa-title">500 elèv ayisyen ap etudye an Brezil</div><div class="sa-time">6 è de tan</div></div></div>
+      <div class="sa"><img src="https://picsum.photos/seed/tech1/200/150" alt=""><div><div class="sa-cat">Teknoloji</div><div class="sa-title">Premye sant AI an Ayiti louvri nan Cap-Haïtien</div><div class="sa-time">8 è de tan</div></div></div>
+    </div>
+  </section>
+
+  <div class="sec-hdr" id="secHdr">
+    <h2 id="secTitle">Dènye Nouvèl</h2>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="news-grid" id="newsGrid">
+
+    <div class="news-card" data-cat="politik ayiti">
+      <img src="https://picsum.photos/seed/polit1/500/300" alt="">
+      <div class="nc-body"><div class="nc-cat">Politik · Ayiti</div><div class="nc-title">Palman an vote nouvo lwa sou sekirite nasyonal la</div><div class="nc-excerpt">Chanm depite yo apwouve teks la apre 3 mwa debay entans. Lwa a pral chanje estrikti polis nasyonal la.</div><div class="nc-meta"><span>Jean Pierre</span><span class="dot">•</span><span>Jodi a</span><span class="dot">•</span><span>4 min</span></div></div>
+    </div>
+
+    <div class="news-card" data-cat="ekonomi ayiti">
+      <img src="https://picsum.photos/seed/eco1/500/300" alt="">
+      <div class="nc-body"><div class="nc-cat">Ekonomi · Ayiti</div><div class="nc-title">BRH bese to enterè pou ankouraje envestisman lokal</div><div class="nc-excerpt">Bank Santral la anonse redikasyon 2% nan to direktè a pou premye fwa depi 5 ane.</div><div class="nc-meta"><span>Louise Moreau</span><span class="dot">•</span><span>Jodi a</span><span class="dot">•</span><span>3 min</span></div></div>
+    </div>
+
+    <div class="news-card" data-cat="sante ayiti">
+      <img src="https://picsum.photos/seed/health1/500/300" alt="">
+      <div class="nc-body"><div class="nc-cat">Sante · Ayiti</div><div class="nc-title">OMS rapòte redikasyon 40% nan maladi enfeksyez nan nò Ayiti</div><div class="nc-excerpt">Nouvo pwogram vaksinasyon an bay rezilta pozitif nan zòn pi afekte yo.</div><div class="nc-meta"><span>Dr. Jean Baptiste</span><span class="dot">•</span><span>Yè</span><span class="dot">•</span><span>6 min</span></div></div>
+    </div>
+
+    <div class="news-card" data-cat="espo ayiti">
+      <img src="https://picsum.photos/seed/sport1/500/300" alt="">
+      <div class="nc-body"><div class="nc-cat">Espò · Ayiti</div><div class="nc-title">Les Grenadiers klasifye pou Copa Amerik 2027 apre viktwa 3-1</div><div class="nc-excerpt">Ekip nasyonal la bat Jamayik nan match dènye chans lan. Tout peyi a selebre!</div><div class="nc-meta"><span>Robert Fils</span><span class="dot">•</span><span>Yè</span><span class="dot">•</span><span>3 min</span></div></div>
+    </div>
+
+    <div class="news-card" data-cat="kilti ayiti">
+      <img src="https://picsum.photos/seed/cult1/500/300" alt="">
+      <div class="nc-body"><div class="nc-cat">Kilti · Ayiti</div><div class="nc-title">Kanaval 2026: 200,000 moun espere nan selebrasyon nasyonal la</div><div class="nc-excerpt">Komite òganizasyon an revele pwogram ofisyèl la ak atis nasyonal ak entènasyonal.</div><div class="nc-meta"><span>Claudette René</span><span class="dot">•</span><span>Yè</span><span class="dot">•</span><span>4 min</span></div></div>
+    </div>
+
+    <div class="news-card" data-cat="teknoloji ayiti">
+      <img src="https://picsum.photos/seed/tech1/500/300" alt="">
+      <div class="nc-body"><div class="nc-cat">Teknoloji · Ayiti</div><div class="nc-title">Premye sant AI an Ayiti louvri pòt li nan Cap-Haïtien</div><div class="nc-excerpt">Enstitisyon nouvo sa a pral fòme 1,000 jèn chak ane nan domèn entèlijans atifisyèl.</div><div class="nc-meta"><span>Tech HT</span><span class="dot">•</span><span>Yè</span><span class="dot">•</span><span>5 min</span></div></div>
+    </div>
+
+    <div class="news-card" data-cat="karayib">
+      <img src="https://picsum.photos/seed/carib1/500/300" alt="">
+      <div class="nc-body"><div class="nc-cat">Karayib</div><div class="nc-title">CARICOM anonse pakè èd ekonomik pou peyi manm yo</div><div class="nc-excerpt">Reyinyon nan Trinidad pou diskite sou kriz ekonomik ki afekte plizyè peyi Karayib yo.</div><div class="nc-meta"><span>Pierre Louis</span><span class="dot">•</span><span>Jodi a</span><span class="dot">•</span><span>3 min</span></div></div>
+    </div>
+
+    <div class="news-card" data-cat="amerik">
+      <img src="https://picsum.photos/seed/oms1/500/300" alt="">
+      <div class="nc-body"><div class="nc-cat">Amerik</div><div class="nc-title">Somè G20 nan Brezil: Lidè mondyal diskite sou chanjman klimatik</div><div class="nc-excerpt">Plis pase 50 chèf deta pral siyen akò nouvo sou redikasyon emisyon kabòn.</div><div class="nc-meta"><span>Reuters / AP</span><span class="dot">•</span><span>Jodi a</span><span class="dot">•</span><span>5 min</span></div></div>
+    </div>
+
+    <div class="news-card" data-cat="ewop">
+      <img src="https://picsum.photos/seed/eur1/500/300" alt="">
+      <div class="nc-body"><div class="nc-cat">Ewòp</div><div class="nc-title">UE adopte nouvo politik migrasyon ki pral afekte dyaspora ayisyen an</div><div class="nc-excerpt">Pòleman Ewopeyèn vote pou nouvo règ ki konsène moun san papye yo nan 27 peyi manm.</div><div class="nc-meta"><span>AFP</span><span class="dot">•</span><span>Yè</span><span class="dot">•</span><span>4 min</span></div></div>
+    </div>
+
+    <div class="news-card" data-cat="afrik">
+      <img src="https://picsum.photos/seed/news1/500/300" alt="">
+      <div class="nc-body"><div class="nc-cat">Afrik</div><div class="nc-title">Union Afrikèn lanse plan solid pou ranfòse lyen ak dyaspora mondyal la</div><div class="nc-excerpt">Inisyativ nouvo sa a vize kreye patenarya ekonomik ant Afrik ak kominote dyaspora atravè mond lan.</div><div class="nc-meta"><span>Al Jazeera</span><span class="dot">•</span><span>2 jou</span><span class="dot">•</span><span>5 min</span></div></div>
+    </div>
+
+    <div class="news-card" data-cat="ekonomi">
+      <img src="https://picsum.photos/seed/bourse1/500/300" alt="">
+      <div class="nc-body"><div class="nc-cat">Ekonomi</div><div class="nc-title">Bous mondyal yo monte pou 3yèm jounen konsekitif apre done Etazini</div><div class="nc-excerpt">Mache finansye reyaji pozitivman apre piblikasyon done chomaj ki pi ba pase previzyon yo.</div><div class="nc-meta"><span>Bloomberg</span><span class="dot">•</span><span>Jodi a</span><span class="dot">•</span><span>4 min</span></div></div>
+    </div>
+
+    <div class="news-card" data-cat="politik">
+      <img src="https://picsum.photos/seed/polit1/500/300" alt="">
+      <div class="nc-body"><div class="nc-cat">Politik</div><div class="nc-title">ONU mande negosyasyon lapè nan plizyè zòn konfli atravè mond lan</div><div class="nc-excerpt">Konsèy Sekirite a reyini an ijans pou diskite sou sitiyasyon ki ap degrade nan 4 rejyon diferan.</div><div class="nc-meta"><span>UN News</span><span class="dot">•</span><span>Jodi a</span><span class="dot">•</span><span>6 min</span></div></div>
+    </div>
+
+    <div class="empty-msg" id="emptyMsg">
+      <span class="ei">📰</span>
+      Pa gen atik pou kategori sa a pou kounye a.<br>Tounen pita oswa chwazi yon lòt kategori.
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-logo">PEJAM<span> TV</span></div>
+      <p>Nouvèl Ayiti ak Mond lan — 24/7</p>
+      <button class="modal-x" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-bdy">
+      <div class="modal-t" id="modalTitle">Konekte / Kreye Kont</div>
+      <div class="modal-d" id="modalDesc">Jwenn aksè a kontni eksklizif ak notifikasyon pèsonalize.</div>
+      <button class="btn-g-big" onclick="simulateGoogleLogin()">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Kontinye ak Google
+      </button>
+      <div style="background:#f8f5f0;border-radius:4px;padding:14px;font-size:13px;color:#666;line-height:1.6;margin-top:8px">
+        🔔 Apre koneksyon, ou pral resevwa notifikasyon otomatikman pou tout dènye nouvèl PEJAM TV yo.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span id="toastIcon" style="font-size:20px">✅</span>
+  <div>
+    <div style="font-weight:700;margin-bottom:2px" id="toastTitle">OK!</div>
+    <div style="font-size:12px;color:#aaa" id="toastMsg">...</div>
+  </div>
+</div>
+
+
+<!-- PRICING SECTION -->
+<div class="pricing-section" id="pricingSection">
+  <div class="pricing-inner">
+    <div class="pricing-hdr">
+      <h2>Chwazi <span>Plan</span> Ou</h2>
+      <p>Abòne jodi a — resevwa tout nouvèl yo dirèkteman, san reklam, nan lang ou vle</p>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- STANDARD — FEATURED -->
+      <div class="plan-card featured">
+        <div class="plan-badge">⭐ PI POPILÈ</div>
+        <div class="plan-name">Standard</div>
+        <div class="plan-price">500 <span>HTG / mwa</span></div>
+        <div class="plan-desc">Pafè pou moun ki vle rete enfòme tout tan, nenpòt kote</div>
+        <ul class="plan-features">
+          <li>Atik ilimite</li>
+          <li>Notifikasyon ijan 🔔</li>
+          <li>Nouvèl 3 lang (KR/FR/EN)</li>
+          <li>San reklam</li>
+          <li class="off">Analiz & Rapò espesyal</li>
+        </ul>
+        <button class="btn-plan btn-plan-pay" onclick="openPayModal('standard')">Abòne — 500 HTG</button>
+      </div>
+
+      <!-- VIP -->
+      <div class="plan-card">
+        <div class="plan-name">VIP</div>
+        <div class="plan-price">1,200 <span>HTG / mwa</span></div>
+        <div class="plan-desc">Pou pwofesyonèl ak biznis ki bezwen enfòmasyon konplè</div>
+        <ul class="plan-features">
+          <li>Tout sa Standard gen</li>
+          <li>Analiz & Rapò espesyal</li>
+          <li>Newsletter VIP semèn nan</li>
+          <li>Aksè dosye achiv konplè</li>
+          <li>Sipò priyoritè</li>
+        </ul>
+        <button class="btn-plan btn-plan-vip" onclick="openPayModal('vip')">Abòne VIP</button>
+      </div>
+    </div>
+
+    <!-- PAYMENT METHODS -->
+    <div class="pay-section">
+      <div class="pay-hdr">
+        <h3>Kijan Pou Peye</h3>
+        <p>Chwazi metòd ki pi fasil pou ou — pèman konfime nan 5 minit</p>
+      </div>
+
+      <div class="pay-methods">
+
+        <!-- MONCASH -->
+        <div class="pay-card">
+          <div class="pay-card-top">
+            <div class="pay-icon moncash">📱</div>
+            <div>
+              <div class="pay-name">MonCash</div>
+              <div class="pay-sub">Digicel Mobile Money</div>
+            </div>
+          </div>
+          <div class="pay-number">
+            Voye lajan bay:<br>
+            <strong id="moncashNum">+509 3691-1132</strong>
+          </div>
+          <button class="pay-copy-btn" onclick="copyNum('moncashNum', this)">📋 Kopye nimewo</button>
+          <div style="color:#666;font-size:11px;margin-top:8px;line-height:1.5">
+            Mete <strong style="color:#aaa">PEJAMTV</strong> nan nòt pèman an.<br>
+            Voye screenshot ba nou apre.
+          </div>
+        </div>
+
+        <!-- CARTE DE CREDIT -->
+        <div class="pay-card">
+          <div class="pay-card-top">
+            <div class="pay-icon card">💳</div>
+            <div>
+              <div class="pay-name">Carte de Crédit</div>
+              <div class="pay-sub">Visa / Mastercard — Stripe</div>
+            </div>
+          </div>
+          <div class="pay-number">
+            Kontakte nou:<br>
+            <strong id="cardNum">+509 5656-5623</strong>
+          </div>
+          <button class="pay-copy-btn" onclick="copyNum('cardNum', this)">📋 Kopye nimewo</button>
+          <div style="color:#666;font-size:11px;margin-top:8px;line-height:1.5">
+            Rele oswa voye mesaj WhatsApp ba nou.<br>
+            Nou pral gide ou nan pèman an.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pay-note">
+        ✉️ Apre pèman ou, voye konfirmasyon ba nou:<br>
+        <strong style="color:#aaa">abonnement@pejamtv.ht</strong> oswa WhatsApp:
+        <strong style="color:#aaa" id="waNum">+509 3691-1132</strong>
+        <button class="pay-copy-btn" onclick="copyNum('waNum', this)" style="margin-left:6px">📋 Kopye</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PÈMAN -->
+<div class="modal-overlay" id="payModalOverlay" onclick="if(event.target===this)closePayModal()">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-logo">PEJAM<span> TV</span></div>
+      <p id="payModalSub">Abònman Standard — 500 HTG/mwa</p>
+      <button class="modal-x" onclick="closePayModal()">✕</button>
+    </div>
+    <div class="modal-bdy">
+      <div class="modal-t" id="payModalTitle">Konfime Abònman Ou</div>
+      <div class="modal-d">Chwazi metòd pèman ou vle itilize</div>
+
+      <div style="display:grid;gap:12px;margin-bottom:20px">
+        <div class="pay-card" style="cursor:default">
+          <div class="pay-card-top">
+            <div class="pay-icon moncash">📱</div>
+            <div><div class="pay-name" style="font-size:13px">MonCash</div><div class="pay-sub">Voye bay: <strong style="color:white">+509 3691-1132</strong></div></div>
+          </div>
+          <button class="pay-copy-btn" onclick="copyNum('moncashNum',this)" style="width:100%;padding:8px">📋 Kopye Nimewo MonCash</button>
+        </div>
+
+        <div class="pay-card" style="cursor:default">
+          <div class="pay-card-top">
+            <div class="pay-icon card">💳</div>
+            <div><div class="pay-name" style="font-size:13px">Carte de Crédit</div><div class="pay-sub">Kontakte: <strong style="color:white">+509 5656-5623</strong></div></div>
+          </div>
+          <button class="pay-copy-btn" onclick="copyText('+509 5656-5623', this)" style="width:100%;padding:8px">📋 Kopye Nimewo — +509 5656-5623</button>
+        </div>
+      </div>
+
+      <div style="background:#f8f5f0;border-radius:4px;padding:14px;font-size:12px;color:#666;line-height:1.6">
+        ✉️ Apre pèman: voye screenshot ba nou sou<br>
+        <strong>abonnement@pejamtv.ht</strong> oswa WhatsApp <strong>+509 3691-1132</strong><br>
+        Kont ou pral aktive nan <strong>5 minit</strong>.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="fl">PEJAM<span> TV</span></div>
+      <p class="fd">Sit nouvèl premye peyi Nwa a. Nouvèl Ayiti ak mond lan an Kreyòl, Fransè, ak Anglè — 24/7.</p>
+      <div style="display:flex;gap:14px">
+        <a style="color:#777;font-size:20px;cursor:pointer">𝕏</a>
+        <a style="color:#777;font-size:20px;cursor:pointer">f</a>
+        <a style="color:#777;font-size:20px;cursor:pointer">▶</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Seksiyon</h4>
+      <a onclick="filterCat('ayiti')">Ayiti</a>
+      <a onclick="filterCat('karayib')">Karayib</a>
+      <a onclick="filterCat('amerik')">Amerik</a>
+      <a onclick="filterCat('ewop')">Ewòp</a>
+      <a onclick="filterCat('afrik')">Afrik</a>
+    </div>
+    <div class="footer-col">
+      <h4>Tematik</h4>
+      <a onclick="filterCat('politik')">Politik</a>
+      <a onclick="filterCat('ekonomi')">Ekonomi</a>
+      <a onclick="filterCat('sante')">Sante</a>
+      <a onclick="filterCat('espo')">Espò</a>
+      <a onclick="filterCat('kilti')">Kilti</a>
+      <a onclick="filterCat('teknoloji')">Teknoloji</a>
+    </div>
+    <div class="footer-col">
+      <h4>Konpayi</h4>
+      <a>Sou nou</a><a>Redaksyon</a><a>Kontakte nou</a><a>Piblisite</a><a>Konfidansyalite</a>
+    </div>
+  </div>
+  <div class="footer-btm">
+    <span>© 2026 PEJAM TV — Tout dwa rezève</span>
+    <span>Pòtoprens, Ayiti 🇭🇹</span>
+  </div>
+</footer>
+
+<script>
+// ========== FILTÈ KATEGORI ==========
+const secTitles = {
+  tout:'Dènye Nouvèl', ayiti:'Ayiti', politik:'Politik', ekonomi:'Ekonomi',
+  sante:'Sante', espo:'Espò', kilti:'Kilti', teknoloji:'Teknoloji',
+  karayib:'Karayib', amerik:'Amerik', ewop:'Ewòp', afrik:'Afrik'
+};
+
+function filterCat(cat) {
+  currentCat = cat;
+  // Mete nav item active
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.cat === cat);
+  });
+
+  // Filtre kat nouvèl
+  const cards = document.querySelectorAll('.news-card[data-cat]');
+  let visible = 0;
+  cards.forEach(card => {
+    const show = cat === 'tout' || card.dataset.cat.includes(cat);
+    card.classList.toggle('hidden', !show);
+    if(show) visible++;
+  });
+
+  // Hero: montre sèlman si "tout"
+  document.getElementById('heroSection').style.display = (cat === 'tout') ? 'grid' : 'none';
+
+  // Titre seksyon
+  document.getElementById('secTitle').textContent = translations[currentLang].secTitles[cat] || translations[currentLang].secTitles['tout'];
+
+  // Mesaj vid
+  document.getElementById('emptyMsg').style.display = (visible === 0) ? 'block' : 'none';
+
+  // Scroll
+  window.scrollTo({top: 0, behavior:'smooth'});
+}
+
+// Ajoute event listener sou chak nav-item
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', function() {
+    filterCat(this.dataset.cat);
+  });
+});
+
+// Klike sou kat nouvèl
+document.querySelectorAll('.news-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const t = card.querySelector('.nc-title');
+    if(t) showToast('📰', 'Atik ouvri...', t.textContent.substring(0,55)+'…');
+  });
+});
+
+// ========== LANG ==========
+const translations = {
+  ht: {
+    // Notif bar
+    notif: "Aktive notifikasyon PEJAM TV — pa rate okenn nouvèl!",
+    notifActivated: "✓ Ou konekte. Notifikasyon aktive!",
+    // Header
+    google: "Konekte ak Google",
+    abone: "Abòne",
+    // Nav
+    nav: ["Tout","Ayiti","Politik","Ekonomi","Sante","Espò","Kilti","Teknoloji","Karayib","Amerik","Ewòp","Afrik"],
+    // Breaking
+    breaking: "🔴 Ijan",
+    // Section titles
+    secTout: "Dènye Nouvèl",
+    secTitles: {tout:"Dènye Nouvèl",ayiti:"Ayiti",politik:"Politik",ekonomi:"Ekonomi",sante:"Sante",espo:"Espò",kilti:"Kilti",teknoloji:"Teknoloji",karayib:"Karayib",amerik:"Amerik",ewop:"Ewòp",afrik:"Afrik"},
+    // Hero
+    heroTitle: "Gouvènman an anonse yon nouvo plan rekonstriksyon nasyonal pou 2026–2030",
+    heroCat: "Politik",
+    heroBy: "Marie Desrosiers", heroTime: "Jodi a, 9:30", heroRead: "5 min lekti",
+    // Cards
+    cards: [
+      {cat:"Politik · Ayiti", title:"Palman an vote nouvo lwa sou sekirite nasyonal la", excerpt:"Chanm depite yo apwouve teks la apre 3 mwa debay entans. Lwa a pral chanje estrikti polis nasyonal la.", by:"Jean Pierre", time:"Jodi a"},
+      {cat:"Ekonomi · Ayiti", title:"BRH bese to enterè pou ankouraje envestisman lokal", excerpt:"Bank Santral la anonse redikasyon 2% nan to direktè a pou premye fwa depi 5 ane.", by:"Louise Moreau", time:"Jodi a"},
+      {cat:"Sante · Ayiti", title:"OMS rapòte redikasyon 40% nan maladi enfeksyez nan nò Ayiti", excerpt:"Nouvo pwogram vaksinasyon an bay rezilta pozitif nan zòn pi afekte yo.", by:"Dr. Jean Baptiste", time:"Yè"},
+      {cat:"Espò · Ayiti", title:"Les Grenadiers klasifye pou Copa Amerik 2027 apre viktwa 3-1", excerpt:"Ekip nasyonal la bat Jamayik nan match dènye chans lan. Tout peyi a selebre!", by:"Robert Fils", time:"Yè"},
+      {cat:"Kilti · Ayiti", title:"Kanaval 2026: 200,000 moun espere nan selebrasyon nasyonal la", excerpt:"Komite òganizasyon an revele pwogram ofisyèl la ak atis nasyonal ak entènasyonal.", by:"Claudette René", time:"Yè"},
+      {cat:"Teknoloji · Ayiti", title:"Premye sant AI an Ayiti louvri pòt li nan Cap-Haïtien", excerpt:"Enstitisyon nouvo sa a pral fòme 1,000 jèn chak ane nan domèn entèlijans atifisyèl.", by:"Tech HT", time:"Yè"},
+      {cat:"Karayib", title:"CARICOM anonse pakè èd ekonomik pou peyi manm yo", excerpt:"Reyinyon nan Trinidad pou diskite sou kriz ekonomik ki afekte plizyè peyi Karayib yo.", by:"Pierre Louis", time:"Jodi a"},
+      {cat:"Amerik", title:"Somè G20 nan Brezil: Lidè mondyal diskite sou chanjman klimatik", excerpt:"Plis pase 50 chèf deta pral siyen akò nouvo sou redikasyon emisyon kabòn.", by:"Reuters / AP", time:"Jodi a"},
+      {cat:"Ewòp", title:"UE adopte nouvo politik migrasyon ki pral afekte dyaspora ayisyen an", excerpt:"Pòleman Ewopeyèn vote pou nouvo règ ki konsène moun san papye yo nan 27 peyi manm.", by:"AFP", time:"Yè"},
+      {cat:"Afrik", title:"Union Afrikèn lanse plan solid pou ranfòse lyen ak dyaspora mondyal la", excerpt:"Inisyativ nouvo sa a vize kreye patenarya ekonomik ant Afrik ak kominote dyaspora atravè mond lan.", by:"Al Jazeera", time:"2 jou"},
+      {cat:"Ekonomi", title:"Bous mondyal yo monte pou 3yèm jounen konsekitif apre done Etazini", excerpt:"Mache finansye reyaji pozitivman apre piblikasyon done chomaj ki pi ba pase previzyon yo.", by:"Bloomberg", time:"Jodi a"},
+      {cat:"Politik", title:"ONU mande negosyasyon lapè nan plizyè zòn konfli atravè mond lan", excerpt:"Konsèy Sekirite a reyini an ijans pou diskite sou sitiyasyon ki ap degrade nan 4 rejyon diferan.", by:"UN News", time:"Jodi a"},
+    ],
+    // Sidebar
+    sidebar: [
+      {cat:"Ekonomi", title:"Monnen Ayisyen estabilize apre entèvansyon BRH", time:"2 è de tan"},
+      {cat:"Espò", title:"Les Grenadiers: viktwa 3-1 kont Jamayik", time:"3 è de tan"},
+      {cat:"Sante", title:"MSF ouvri nouvo sant sante nan Pòtoprens", time:"5 è de tan"},
+      {cat:"Edikasyon", title:"500 elèv ayisyen ap etudye an Brezil", time:"6 è de tan"},
+      {cat:"Teknoloji", title:"Premye sant AI an Ayiti louvri nan Cap-Haïtien", time:"8 è de tan"},
+    ],
+    // Pricing
+    pricingTitle: "Chwazi Plan Ou",
+    pricingDesc: "Abòne jodi a — resevwa tout nouvèl yo dirèkteman, san reklam, nan lang ou vle",
+    planStdName:"Standard", planStdPrice:"500", planStdCurrency:"HTG / mwa",
+    planStdDesc:"Pafè pou moun ki vle rete enfòme tout tan, nenpòt kote",
+    planStdFeatures:["Atik ilimite","Notifikasyon ijan 🔔","Nouvèl 3 lang (KR/FR/EN)","San reklam"],
+    planStdBtn:"Abòne — 500 HTG",
+    planVipName:"VIP", planVipPrice:"1,200", planVipCurrency:"HTG / mwa",
+    planVipDesc:"Pou pwofesyonèl ak biznis ki bezwen enfòmasyon konplè",
+    planVipFeatures:["Tout sa Standard gen","Analiz & Rapò espesyal","Newsletter VIP semèn nan","Aksè dosye achiv konplè","Sipò priyoritè"],
+    planVipBtn:"Abòne VIP",
+    payTitle:"Kijan Pou Peye",
+    payDesc:"Chwazi metòd ki pi fasil pou ou — pèman konfime nan 5 minit",
+    payNote:"✉️ Apre pèman: voye screenshot ba nou sou abonnement@pejamtv.ht oswa WhatsApp +509 5656-5623. Kont ou pral aktive nan 5 minit.",
+    // Modal
+    modalLoginTitle:"Konekte / Kreye Kont", modalLoginDesc:"Jwenn aksè a kontni eksklizif ak notifikasyon pèsonalize.",
+    googleBtn:"Kontinye ak Google", orText:"oswa ak imèl ou",
+    emailPh:"Imèl / Email / Courriel", passPh:"Modpas / Password",
+    notifTitle:"📬 Notifikasyon ou vle resevwa",
+    notifOpts:["Nouvèl Ijan (Breaking News)","Politik Ayiti","Ekonomi ak Afè","Espò","Kilti ak Atizay","Nouvèl Entènasyonal"],
+    loginBtn:"Kreye Kont / Konekte →",
+    // Footer
+    footerDesc:"Sit nouvèl premye peyi Nwa a. Nouvèl Ayiti ak mond lan an Kreyòl, Fransè, ak Anglè — 24/7.",
+    footerSec:"Seksiyon", footerThem:"Tematik", footerCo:"Konpayi",
+    footerLinks:["Ayiti","Karayib","Amerik","Ewòp","Afrik"],
+    footerThems:["Politik","Ekonomi","Sante","Espò","Kilti","Teknoloji"],
+    footerCoLinks:["Sou nou","Redaksyon","Kontakte nou","Piblisite","Konfidansyalite"],
+    copyright:"© 2026 PEJAM TV — Tout dwa rezève",
+    emptyMsg:"Pa gen atik pou kategori sa a pou kounye a.<br>Tounen pita oswa chwazi yon lòt kategori.",
+    readMin:"min lekti", today:"Jodi a", yesterday:"Yè",
+  },
+  fr: {
+    notif: "Activez les notifications PEJAM TV — ne ratez aucune info !",
+    notifActivated: "✓ Connecté. Notifications activées !",
+    google: "Connexion Google", abone: "S'abonner",
+    nav: ["Tout","Haïti","Politique","Économie","Santé","Sports","Culture","Technologie","Caraïbes","Amériques","Europe","Afrique"],
+    breaking: "🔴 Flash",
+    secTitles: {tout:"Dernières Nouvelles",ayiti:"Haïti",politik:"Politique",ekonomi:"Économie",sante:"Santé",espo:"Sports",kilti:"Culture",teknoloji:"Technologie",karayib:"Caraïbes",amerik:"Amériques",ewop:"Europe",afrik:"Afrique"},
+    heroTitle: "Le gouvernement annonce un nouveau plan de reconstruction national pour 2026–2030",
+    heroCat: "Politique", heroBy: "Marie Desrosiers", heroTime: "Aujourd'hui, 9h30", heroRead: "5 min de lecture",
+    cards: [
+      {cat:"Politique · Haïti", title:"Le Parlement vote une nouvelle loi sur la sécurité nationale", excerpt:"La chambre des députés a approuvé le texte après 3 mois de débats intenses.", by:"Jean Pierre", time:"Aujourd'hui"},
+      {cat:"Économie · Haïti", title:"La BRH baisse son taux directeur pour stimuler l'investissement local", excerpt:"La Banque Centrale annonce une réduction de 2% pour la première fois en 5 ans.", by:"Louise Moreau", time:"Aujourd'hui"},
+      {cat:"Santé · Haïti", title:"L'OMS rapporte une réduction de 40% des maladies infectieuses dans le nord", excerpt:"Le nouveau programme de vaccination donne des résultats positifs dans les zones les plus touchées.", by:"Dr. Jean Baptiste", time:"Hier"},
+      {cat:"Sports · Haïti", title:"Les Grenadiers qualifiés pour la Copa América 2027 après une victoire 3-1", excerpt:"L'équipe nationale a battu la Jamaïque lors du match décisif. Tout le pays célèbre !", by:"Robert Fils", time:"Hier"},
+      {cat:"Culture · Haïti", title:"Carnaval 2026 : 200 000 personnes attendues à la fête nationale", excerpt:"Le comité d'organisation a dévoilé le programme officiel avec des artistes locaux et internationaux.", by:"Claudette René", time:"Hier"},
+      {cat:"Technologie · Haïti", title:"Premier centre IA en Haïti ouvre ses portes au Cap-Haïtien", excerpt:"Cette nouvelle institution formera 1 000 jeunes chaque année dans le domaine de l'intelligence artificielle.", by:"Tech HT", time:"Hier"},
+      {cat:"Caraïbes", title:"La CARICOM annonce un paquet d'aide économique pour ses membres", excerpt:"Réunion à Trinidad pour discuter de la crise économique affectant plusieurs pays des Caraïbes.", by:"Pierre Louis", time:"Aujourd'hui"},
+      {cat:"Amériques", title:"Sommet G20 au Brésil : les dirigeants mondiaux discutent du changement climatique", excerpt:"Plus de 50 chefs d'État signeront un nouvel accord sur la réduction des émissions de carbone.", by:"Reuters / AP", time:"Aujourd'hui"},
+      {cat:"Europe", title:"L'UE adopte une nouvelle politique migratoire qui touchera la diaspora haïtienne", excerpt:"Le Parlement européen vote de nouvelles règles concernant les sans-papiers dans les 27 pays membres.", by:"AFP", time:"Hier"},
+      {cat:"Afrique", title:"L'Union Africaine lance un plan pour renforcer les liens avec la diaspora mondiale", excerpt:"Cette nouvelle initiative vise à créer des partenariats économiques entre l'Afrique et les communautés de la diaspora.", by:"Al Jazeera", time:"Il y a 2 jours"},
+      {cat:"Économie", title:"Les bourses mondiales montent pour le 3e jour consécutif après les données américaines", excerpt:"Les marchés financiers réagissent positivement après la publication de données sur le chômage inférieures aux prévisions.", by:"Bloomberg", time:"Aujourd'hui"},
+      {cat:"Politique", title:"L'ONU demande des négociations de paix dans plusieurs zones de conflit", excerpt:"Le Conseil de Sécurité se réunit en urgence pour discuter de la situation qui se dégrade dans 4 régions.", by:"UN News", time:"Aujourd'hui"},
+    ],
+    sidebar: [
+      {cat:"Économie", title:"La gourde haïtienne se stabilise après l'intervention de la BRH", time:"Il y a 2h"},
+      {cat:"Sports", title:"Les Grenadiers : victoire 3-1 contre la Jamaïque", time:"Il y a 3h"},
+      {cat:"Santé", title:"MSF ouvre un nouveau centre de santé à Port-au-Prince", time:"Il y a 5h"},
+      {cat:"Éducation", title:"500 élèves haïtiens vont étudier au Brésil", time:"Il y a 6h"},
+      {cat:"Technologie", title:"Premier centre IA en Haïti au Cap-Haïtien", time:"Il y a 8h"},
+    ],
+    pricingTitle:"Choisissez Votre Abonnement", pricingDesc:"Abonnez-vous aujourd'hui — recevez toutes les nouvelles directement, sans publicité",
+    planStdName:"Standard", planStdPrice:"500", planStdCurrency:"HTG / mois",
+    planStdDesc:"Parfait pour rester informé à tout moment, n'importe où",
+    planStdFeatures:["Articles illimités","Notifications urgentes 🔔","Actualités en 3 langues","Sans publicité"],
+    planStdBtn:"S'abonner — 500 HTG",
+    planVipName:"VIP", planVipPrice:"1 200", planVipCurrency:"HTG / mois",
+    planVipDesc:"Pour les professionnels et entreprises qui ont besoin d'informations complètes",
+    planVipFeatures:["Tout ce qu'inclut Standard","Analyses & Rapports spéciaux","Newsletter VIP hebdomadaire","Accès aux archives complètes","Support prioritaire"],
+    planVipBtn:"S'abonner VIP",
+    payTitle:"Comment Payer", payDesc:"Choisissez la méthode la plus facile — paiement confirmé en 5 minutes",
+    payNote:"✉️ Après paiement : envoyez une capture d'écran à abonnement@pejamtv.ht ou WhatsApp +509 5656-5623. Votre compte sera activé en 5 minutes.",
+    modalLoginTitle:"Connexion / Créer un Compte", modalLoginDesc:"Accédez au contenu exclusif et aux notifications personnalisées.",
+    googleBtn:"Continuer avec Google", orText:"ou avec votre email",
+    emailPh:"Email / Courriel", passPh:"Mot de passe",
+    notifTitle:"📬 Notifications souhaitées",
+    notifOpts:["Infos urgentes (Breaking News)","Politique Haïti","Économie & Affaires","Sports","Culture & Arts","Actualités Internationales"],
+    loginBtn:"Créer un Compte / Se Connecter →",
+    footerDesc:"Le média d'information de la première nation noire. Actualités d'Haïti et du monde en Créole, Français et Anglais — 24/7.",
+    footerSec:"Sections", footerThem:"Thématiques", footerCo:"Société",
+    footerLinks:["Haïti","Caraïbes","Amériques","Europe","Afrique"],
+    footerThems:["Politique","Économie","Santé","Sports","Culture","Technologie"],
+    footerCoLinks:["À propos","Rédaction","Nous contacter","Publicité","Confidentialité"],
+    copyright:"© 2026 PEJAM TV — Tous droits réservés",
+    emptyMsg:"Aucun article pour cette catégorie pour le moment.<br>Revenez plus tard ou choisissez une autre catégorie.",
+    readMin:"min de lecture", today:"Aujourd'hui", yesterday:"Hier",
+  },
+  en: {
+    notif: "Enable PEJAM TV notifications — never miss breaking news!",
+    notifActivated: "✓ Connected. Notifications enabled!",
+    google: "Sign in with Google", abone: "Subscribe",
+    nav: ["All","Haiti","Politics","Economy","Health","Sports","Culture","Technology","Caribbean","Americas","Europe","Africa"],
+    breaking: "🔴 Breaking",
+    secTitles: {tout:"Latest News",ayiti:"Haiti",politik:"Politics",ekonomi:"Economy",sante:"Health",espo:"Sports",kilti:"Culture",teknoloji:"Technology",karayib:"Caribbean",amerik:"Americas",ewop:"Europe",afrik:"Africa"},
+    heroTitle: "Government announces new national reconstruction plan for 2026–2030",
+    heroCat: "Politics", heroBy: "Marie Desrosiers", heroTime: "Today, 9:30 AM", heroRead: "5 min read",
+    cards: [
+      {cat:"Politics · Haiti", title:"Parliament passes new national security law", excerpt:"The chamber of deputies approved the bill after 3 months of intense debate. The law will restructure the national police.", by:"Jean Pierre", time:"Today"},
+      {cat:"Economy · Haiti", title:"BRH cuts interest rates to boost local investment", excerpt:"The Central Bank announces a 2% reduction in its key rate for the first time in 5 years.", by:"Louise Moreau", time:"Today"},
+      {cat:"Health · Haiti", title:"WHO reports 40% reduction in infectious diseases in northern Haiti", excerpt:"The new vaccination program is showing positive results in the most affected areas.", by:"Dr. Jean Baptiste", time:"Yesterday"},
+      {cat:"Sports · Haiti", title:"Les Grenadiers qualify for Copa América 2027 after 3-1 win", excerpt:"The national team beat Jamaica in the decisive match. The whole country is celebrating!", by:"Robert Fils", time:"Yesterday"},
+      {cat:"Culture · Haiti", title:"Carnival 2026: 200,000 people expected at the national celebration", excerpt:"The organizing committee revealed the official program with local and international artists.", by:"Claudette René", time:"Yesterday"},
+      {cat:"Technology · Haiti", title:"Haiti's first AI center opens its doors in Cap-Haïtien", excerpt:"This new institution will train 1,000 young people each year in the field of artificial intelligence.", by:"Tech HT", time:"Yesterday"},
+      {cat:"Caribbean", title:"CARICOM announces economic aid package for member countries", excerpt:"Meeting in Trinidad to discuss the economic crisis affecting several Caribbean countries.", by:"Pierre Louis", time:"Today"},
+      {cat:"Americas", title:"G20 Summit in Brazil: World leaders discuss climate change", excerpt:"More than 50 heads of state will sign a new agreement on reducing carbon emissions.", by:"Reuters / AP", time:"Today"},
+      {cat:"Europe", title:"EU adopts new migration policy that will affect the Haitian diaspora", excerpt:"The European Parliament votes on new rules concerning undocumented people in 27 member countries.", by:"AFP", time:"Yesterday"},
+      {cat:"Africa", title:"African Union launches plan to strengthen ties with global diaspora", excerpt:"This new initiative aims to create economic partnerships between Africa and diaspora communities worldwide.", by:"Al Jazeera", time:"2 days ago"},
+      {cat:"Economy", title:"Global markets rise for 3rd consecutive day after US jobs data", excerpt:"Financial markets react positively after the publication of unemployment data lower than forecasts.", by:"Bloomberg", time:"Today"},
+      {cat:"Politics", title:"UN calls for peace negotiations in multiple conflict zones worldwide", excerpt:"The Security Council meets urgently to discuss the deteriorating situation in 4 different regions.", by:"UN News", time:"Today"},
+    ],
+    sidebar: [
+      {cat:"Economy", title:"Haitian gourde stabilizes after BRH intervention", time:"2h ago"},
+      {cat:"Sports", title:"Les Grenadiers: 3-1 win against Jamaica", time:"3h ago"},
+      {cat:"Health", title:"MSF opens new health center in Port-au-Prince", time:"5h ago"},
+      {cat:"Education", title:"500 Haitian students to study in Brazil", time:"6h ago"},
+      {cat:"Technology", title:"Haiti's first AI center opens in Cap-Haïtien", time:"8h ago"},
+    ],
+    pricingTitle:"Choose Your Plan", pricingDesc:"Subscribe today — get all the news directly, ad-free, in your language",
+    planStdName:"Standard", planStdPrice:"500", planStdCurrency:"HTG / month",
+    planStdDesc:"Perfect for staying informed at all times, anywhere",
+    planStdFeatures:["Unlimited articles","Breaking news notifications 🔔","News in 3 languages","Ad-free"],
+    planStdBtn:"Subscribe — 500 HTG",
+    planVipName:"VIP", planVipPrice:"1,200", planVipCurrency:"HTG / month",
+    planVipDesc:"For professionals and businesses that need complete information",
+    planVipFeatures:["Everything in Standard","Special Analysis & Reports","Weekly VIP Newsletter","Full archive access","Priority support"],
+    planVipBtn:"Subscribe VIP",
+    payTitle:"How to Pay", payDesc:"Choose the easiest method — payment confirmed in 5 minutes",
+    payNote:"✉️ After payment: send a screenshot to abonnement@pejamtv.ht or WhatsApp +509 5656-5623. Your account will be activated in 5 minutes.",
+    modalLoginTitle:"Sign In / Create Account", modalLoginDesc:"Access exclusive content and personalized notifications.",
+    googleBtn:"Continue with Google", orText:"or with your email",
+    emailPh:"Email", passPh:"Password",
+    notifTitle:"📬 Notification preferences",
+    notifOpts:["Breaking News","Haiti Politics","Economy & Business","Sports","Culture & Arts","International News"],
+    loginBtn:"Create Account / Sign In →",
+    footerDesc:"News from the first Black nation. Haiti and world news in Creole, French and English — 24/7.",
+    footerSec:"Sections", footerThem:"Topics", footerCo:"Company",
+    footerLinks:["Haiti","Caribbean","Americas","Europe","Africa"],
+    footerThems:["Politics","Economy","Health","Sports","Culture","Technology"],
+    footerCoLinks:["About us","Editorial","Contact us","Advertising","Privacy"],
+    copyright:"© 2026 PEJAM TV — All rights reserved",
+    emptyMsg:"No articles for this category right now.<br>Check back later or choose another category.",
+    readMin:"min read", today:"Today", yesterday:"Yesterday",
+  }
+};
+
+let currentLang = 'ht';
+let currentCat = 'tout';
+
+function setLang(lang, btn) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyTranslations();
+}
+
+function applyTranslations() {
+  const t = translations[currentLang];
+
+  // Notif bar
+  document.getElementById('notifText').textContent = t.notif;
+
+  // Header buttons
+  const glSpan = document.querySelector('#btnGoogle .gl');
+  if(glSpan) glSpan.textContent = t.google;
+  document.getElementById('btnAbone').textContent = t.abone;
+
+  // Breaking label
+  const brLabel = document.querySelector('.br-label');
+  if(brLabel) brLabel.textContent = t.breaking;
+
+  // Nav items
+  document.querySelectorAll('.nav-item').forEach((el, i) => {
+    el.textContent = t.nav[i];
+  });
+
+  // Section title
+  document.getElementById('secTitle').textContent = t.secTitles[currentCat] || t.secTitles['tout'];
+
+  // Hero
+  document.querySelector('.hero-title').textContent = t.heroTitle;
+  document.querySelector('.hero-cat').textContent = t.heroCat;
+  const heroMeta = document.querySelectorAll('.hero-meta span');
+  if(heroMeta.length >= 5) {
+    heroMeta[0].textContent = t.heroBy;
+    heroMeta[2].textContent = t.heroTime;
+    heroMeta[4].textContent = t.heroRead;
+  }
+
+  // Sidebar articles
+  const saEls = document.querySelectorAll('.sa');
+  t.sidebar.forEach((s, i) => {
+    if(saEls[i]) {
+      saEls[i].querySelector('.sa-cat').textContent = s.cat;
+      saEls[i].querySelector('.sa-title').textContent = s.title;
+      saEls[i].querySelector('.sa-time').textContent = s.time;
+    }
+  });
+
+  // News cards
+  const cardEls = document.querySelectorAll('.news-card[data-cat]');
+  t.cards.forEach((c, i) => {
+    if(cardEls[i]) {
+      cardEls[i].querySelector('.nc-cat').textContent = c.cat;
+      cardEls[i].querySelector('.nc-title').textContent = c.title;
+      cardEls[i].querySelector('.nc-excerpt').textContent = c.excerpt;
+      const meta = cardEls[i].querySelectorAll('.nc-meta span');
+      if(meta.length >= 1) meta[0].textContent = c.by;
+      if(meta.length >= 3) meta[2].textContent = c.time;
+    }
+  });
+
+  // Empty message
+  document.getElementById('emptyMsg').innerHTML = '<span class="ei">📰</span>' + t.emptyMsg;
+
+  // Pricing section
+  document.querySelector('.pricing-hdr h2').innerHTML = t.pricingTitle.replace('Plan','<span>Plan</span>').replace('Abonnement','<span>Abonnement</span>').replace('Your','<span>Your</span>');
+  document.querySelector('.pricing-hdr p').textContent = t.pricingDesc;
+
+  // Plan cards
+  const planCards = document.querySelectorAll('.plan-card');
+  if(planCards[0]) { // Standard
+    planCards[0].querySelector('.plan-name').textContent = t.planStdName;
+    planCards[0].querySelector('.plan-price').innerHTML = t.planStdPrice + ' <span>' + t.planStdCurrency + '</span>';
+    planCards[0].querySelector('.plan-desc').textContent = t.planStdDesc;
+    const feats = planCards[0].querySelectorAll('.plan-features li');
+    t.planStdFeatures.forEach((f,i) => { if(feats[i]) feats[i].textContent = f; });
+    planCards[0].querySelector('.btn-plan').textContent = t.planStdBtn;
+  }
+  if(planCards[1]) { // VIP
+    planCards[1].querySelector('.plan-name').textContent = t.planVipName;
+    planCards[1].querySelector('.plan-price').innerHTML = t.planVipPrice + ' <span>' + t.planVipCurrency + '</span>';
+    planCards[1].querySelector('.plan-desc').textContent = t.planVipDesc;
+    const feats = planCards[1].querySelectorAll('.plan-features li');
+    t.planVipFeatures.forEach((f,i) => { if(feats[i]) feats[i].textContent = f; });
+    planCards[1].querySelector('.btn-plan').textContent = t.planVipBtn;
+  }
+
+  // Payment section
+  document.querySelector('.pay-hdr h3').textContent = t.payTitle;
+  document.querySelector('.pay-hdr p').textContent = t.payDesc;
+  document.querySelector('.pay-note').innerHTML = t.payNote;
+
+  // Modal login
+  document.getElementById('modalTitle').textContent = t.modalLoginTitle;
+  document.getElementById('modalDesc').textContent = t.modalLoginDesc;
+  document.querySelector('.btn-g-big').childNodes[1].textContent = ' ' + t.googleBtn;
+  document.querySelector('.divider').textContent = t.orText;
+  document.getElementById('emailInput').placeholder = t.emailPh;
+  document.getElementById('passInput').placeholder = t.passPh;
+  document.querySelector('.notif-opts h4').textContent = t.notifTitle;
+  const noptLabels = document.querySelectorAll('.nopt');
+  t.notifOpts.forEach((o,i) => {
+    if(noptLabels[i]) noptLabels[i].childNodes[1].textContent = ' ' + o;
+  });
+  document.querySelector('.btn-sub').textContent = t.loginBtn;
+
+  // Footer
+  document.querySelector('.fd').textContent = t.footerDesc;
+  const footerCols = document.querySelectorAll('.footer-col');
+  if(footerCols[0]) {
+    footerCols[0].querySelector('h4').textContent = t.footerSec;
+    const links = footerCols[0].querySelectorAll('a');
+    t.footerLinks.forEach((l,i) => { if(links[i]) links[i].textContent = l; });
+  }
+  if(footerCols[1]) {
+    footerCols[1].querySelector('h4').textContent = t.footerThem;
+    const links = footerCols[1].querySelectorAll('a');
+    t.footerThems.forEach((l,i) => { if(links[i]) links[i].textContent = l; });
+  }
+  if(footerCols[2]) {
+    footerCols[2].querySelector('h4').textContent = t.footerCo;
+    const links = footerCols[2].querySelectorAll('a');
+    t.footerCoLinks.forEach((l,i) => { if(links[i]) links[i].textContent = l; });
+  }
+  document.querySelector('.footer-btm span').textContent = t.copyright;
+  // Update sticky bar
+  const sBtn = document.getElementById('stickyAboneBtn');
+  if(sBtn) sBtn.textContent = '🔴 ' + t.abone + ' — 500 HTG/mwa';
+}
+
+// ========== MODAL ==========
+function openModal(type) {
+  document.getElementById('modalOverlay').classList.add('active');
+  if(type === 'subscribe') {
+    closeModal();
+    openPayModal('standard');
+    return;
+  } else {
+    document.getElementById('modalTitle').textContent = 'Konekte / Kreye Kont';
+    document.getElementById('modalDesc').textContent = 'Jwenn aksè a kontni eksklizif ak notifikasyon pèsonalize.';
+  }
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+
+function closeModalOutside(e) {
+  if(e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+// ========== GOOGLE LOGIN ==========
+function simulateGoogleLogin() {
+  closeModal();
+  document.getElementById('userBadge').classList.add('visible');
+  document.getElementById('userInitial').textContent = 'G';
+  document.getElementById('userName').textContent = 'Google';
+  document.getElementById('btnGoogle').style.display = 'none';
+  showToast('✅', 'Ou konekte!', 'Byenveni sou PEJAM TV. Notifikasyon aktive.');
+  const nb = document.getElementById('notifBar');
+  nb.style.background = '#1A5BC4';
+  document.getElementById('notifText').textContent = '✓ Ou konekte ak Google. Notifikasyon aktive!';
+}
+
+// ========== EMAIL LOGIN ==========
+function simulateEmailLogin() {
+  const emailEl = document.getElementById('emailInput');
+  const email = emailEl.value.trim();
+  if(!email) {
+    emailEl.style.borderColor = 'var(--rouge)';
+    emailEl.focus();
+    showToast('⚠️', 'Erè', 'Tanpri antre imèl ou pou kontinye.');
+    return;
+  }
+  closeModal();
+  document.getElementById('userBadge').classList.add('visible');
+  document.getElementById('userInitial').textContent = email[0].toUpperCase();
+  document.getElementById('userName').textContent = email.split('@')[0];
+  document.getElementById('btnGoogle').style.display = 'none';
+  showToast('📬', 'Abònman Konfime!', 'Ou pral resevwa notifikasyon selon chwa ou yo.');
+}
+
+// ========== NOTIFIKASYON ==========
+function activateNotif() {
+  const btns = document.querySelectorAll('.nb-btn');
+  btns.forEach(b => { b.textContent = '⏳...'; b.disabled = true; });
+
+  function onSuccess() {
+    // Chanje notif bar an ble
+    const nb = document.getElementById('notifBar');
+    nb.style.background = '#1A5BC4';
+    nb.style.transition = 'background 0.5s';
+    document.getElementById('notifText').textContent = '✅ Notifikasyon aktive! Ou pral resevwa tout nouvèl PEJAM TV yo.';
+    btns.forEach(b => {
+      b.textContent = '✓ Aktive';
+      b.style.background = '#4ade80';
+      b.style.color = '#000';
+      b.disabled = true;
+    });
+    // Kache sticky bar tou
+    const sticky = document.getElementById('stickyAbone');
+    if(sticky) sticky.style.display = 'none';
+    showToast('🔔', 'Notifikasyon aktive!', 'Ou pral resevwa tout nouvo PEJAM TV yo!');
+    // Sove eta a
+    localStorage.setItem('notifActivated', '1');
+  }
+
+  function onFail() {
+    btns.forEach(b => { b.textContent = 'Aktive'; b.disabled = false; });
+    showToast('ℹ️', 'Pèmisyon refize', 'Ale nan paramèt navigatè ou pou pèmèt notifikasyon.');
+  }
+
+  if(window.OneSignal) {
+    OneSignal.Notifications.requestPermission().then(perm => {
+      if(perm) onSuccess(); else onFail();
+    });
+  } else if('Notification' in window) {
+    Notification.requestPermission().then(perm => {
+      if(perm === 'granted') onSuccess(); else onFail();
+    });
+  } else {
+    openModal('subscribe');
+    btns.forEach(b => { b.textContent = 'Aktive'; b.disabled = false; });
+  }
+}
+
+// Verifye si notifikasyon deja aktive
+window.addEventListener('load', function() {
+  if(localStorage.getItem('notifActivated') === '1') {
+    const nb = document.getElementById('notifBar');
+    if(nb) {
+      nb.style.background = '#1A5BC4';
+      document.getElementById('notifText').textContent = '✅ Notifikasyon aktive! Ou pral resevwa tout nouvèl PEJAM TV yo.';
+      document.querySelectorAll('.nb-btn').forEach(b => {
+        b.textContent = '✓ Aktive';
+        b.style.background = '#4ade80';
+        b.style.color = '#000';
+        b.disabled = true;
+      });
+      const sticky = document.getElementById('stickyAbone');
+      if(sticky) sticky.style.display = 'none';
+    }
+  }
+});
+
+// ========== TOAST ==========
+function showToast(icon, title, msg) {
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastMsg').textContent = msg;
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4500);
+}
+
+// ===== PAY MODAL =====
+function openPayModal(plan) {
+  const prices = { standard:'500 HTG / mwa', vip:'1,200 HTG / mwa' };
+  const names = { standard:'Standard', vip:'VIP' };
+  document.getElementById('payModalSub').textContent = 'Abònman ' + names[plan] + ' — ' + prices[plan];
+  document.getElementById('payModalTitle').textContent = 'Peye pou Plan ' + names[plan];
+  document.getElementById('payModalOverlay').classList.add('active');
+}
+function closePayModal() {
+  document.getElementById('payModalOverlay').classList.remove('active');
+}
+
+// ===== COPY BUTTONS =====
+function copyNum(id, btn) {
+  const text = document.getElementById(id).textContent.trim();
+  copyText(text, btn);
+}
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✅ Kopye!';
+    btn.style.borderColor = '#22c55e';
+    btn.style.color = '#22c55e';
+    setTimeout(() => { btn.textContent = orig; btn.style.borderColor=''; btn.style.color=''; }, 2000);
+  }).catch(() => {
+    showToast('📋', 'Kopye manyèlman', text);
+  });
+}
+
+// Scroll to pricing when clicking Abòne
+document.getElementById('btnAbone').addEventListener('click', function(e) {
+  // small delay to let modal open check
+});
+
+
+
+
+
+// ===== ADMIN PANEL =====
+const ADMIN_PASS = 'pejamtv2026';
+const OS_APP_ID = '07684c4b-c77b-46cf-a346-0bef3158fad7';
+const OS_API_KEY = 'os_v2_app_a5ueys6hpndm7i2gbpxtcwh227iugku5qhieyo5ueuunrfkxy2sl2ba7ylfcfksdpynurpyzzvldsgy6v66viqg2jlchk6tiexyfyny';
+let notifSentCount = 0;
+
+function openAdmin() {
+  document.getElementById('adminPanel').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+async function uploadImgBB() {
+  const file = document.getElementById('imgFile').files[0];
+  if(!file) return;
+
+  const status = document.getElementById('uploadStatus');
+  status.style.display = 'block';
+  status.style.color = '#aaa';
+  status.textContent = '⏳ Ap telechaje imaj la...';
+
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('key', '6d207e02198a847aa98d0a2a901485a5'); // ImgBB free API key
+
+  try {
+    const r = await fetch('https://api.imgbb.com/1/upload', {
+      method: 'POST',
+      body: formData
+    });
+    const d = await r.json();
+    if(d.success) {
+      const url = d.data.url;
+      document.getElementById('pushImg').value = url;
+      status.style.color = '#4ade80';
+      status.textContent = '✅ Imaj telechaje!';
+      previewImg();
+    } else {
+      status.style.color = '#f87171';
+      status.textContent = '❌ Erè telechajman. Eseye ankò.';
+    }
+  } catch(e) {
+    status.style.color = '#f87171';
+    status.textContent = '❌ Erè koneksyon. Verifye entènèt ou.';
+  }
+}
+
+function previewImg() {
+  const url = document.getElementById('pushImg').value.trim();
+  const preview = document.getElementById('imgPreview');
+  const el = document.getElementById('imgPreviewEl');
+  if(url) {
+    el.src = url;
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none';
+  }
+}
+
+// ===== SECRET ADMIN TRIGGER =====
+let adminTapCount = 0;
+let adminTapTimer = null;
+function adminTap() {
+  adminTapCount++;
+  clearTimeout(adminTapTimer);
+  if(adminTapCount >= 3) {
+    adminTapCount = 0;
+    openAdmin();
+  }
+  adminTapTimer = setTimeout(() => { adminTapCount = 0; }, 2000);
+}
+
+function closeAdmin() {
+  document.getElementById('adminPanel').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function checkAdminPass() {
+  const pass = document.getElementById('adminPass').value;
+  if(pass === ADMIN_PASS) {
+    document.getElementById('adminLogin').style.display = 'none';
+    document.getElementById('adminDash').style.display = 'block';
+    loadStats();
+  } else {
+    document.getElementById('adminErr').style.display = 'block';
+    document.getElementById('adminPass').style.borderColor = 'var(--rouge)';
+  }
+}
+
+async function loadStats() {
+  try {
+    const r = await fetch('https://api.onesignal.com/apps/' + OS_APP_ID, {
+      headers: { 'Authorization': 'Basic ' + OS_API_KEY }
+    });
+    const d = await r.json();
+    if(d.subscribers) document.getElementById('statSubs').textContent = d.subscribers;
+  } catch(e) {
+    document.getElementById('statSubs').textContent = '—';
+  }
+}
+
+async function sendPush() {
+  const title = document.getElementById('pushTitle').value.trim();
+  const msg = document.getElementById('pushMsg').value.trim();
+  const url = document.getElementById('pushUrl').value.trim();
+  const btn = document.getElementById('sendPushBtn');
+  const result = document.getElementById('pushResult');
+
+  if(!title || !msg) {
+    result.className = 'adm-result err';
+    result.style.display = 'block';
+    result.textContent = '⚠️ Tanpri ranpli Tit ak Mesaj la.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Ap voye...';
+  result.style.display = 'none';
+
+  const body = {
+    app_id: OS_APP_ID,
+    included_segments: ['Total Subscriptions'],
+    headings: { en: title, fr: title, ht: title },
+    contents: { en: msg, fr: msg, ht: msg },
+  };
+
+  if(url) body.url = url;
+  const img = document.getElementById('pushImg').value.trim();
+  if(img) {
+    body.big_picture = img;
+    body.ios_attachments = { id1: img };
+    body.chrome_web_image = img;
+  }
+
+  try {
+    const r = await fetch('https://onesignal.com/api/v1/notifications', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + OS_API_KEY
+      },
+      body: JSON.stringify(body)
+    });
+    const d = await r.json();
+    if(d.id) {
+      notifSentCount++;
+      document.getElementById('statSent').textContent = notifSentCount;
+      result.className = 'adm-result ok';
+      result.innerHTML = '✅ Notifikasyon voye!<br>ID: ' + d.id + '<br>Resipyan: ' + (d.recipients || '—');
+      document.getElementById('pushTitle').value = '';
+      document.getElementById('pushMsg').value = '';
+      document.getElementById('pushUrl').value = '';
+      document.getElementById('pushImg').value = '';
+      document.getElementById('imgPreview').style.display = 'none';
+    } else {
+      result.className = 'adm-result err';
+      result.innerHTML = '❌ Erè: ' + JSON.stringify(d.errors || d);
+    }
+  } catch(e) {
+    result.className = 'adm-result err';
+    result.textContent = '❌ Erè koneksyon. Verifye entènèt ou.';
+  }
+
+  result.style.display = 'block';
+  btn.disabled = false;
+  btn.textContent = '🔔 Voye Bay Tout Abòne';
+}
+
+
+
+</script>
+
+<!-- STICKY ABÒNE BAR (mobil sèlman) -->
+<div class="sticky-abone" id="stickyAbone">
+  <button id="stickyAboneBtn" onclick="document.getElementById('pricingSection').scrollIntoView({behavior:'smooth'})">
+    🔴 Abòne — 500 HTG/mwa
+  </button>
+</div>
+
+<!-- BOUTON ADMIN VIZIB POU ADMIN SÈLMAN -->
+<div style="position:fixed;bottom:95px;right:16px;z-index:500">
+  <button onclick="openAdmin()" style="background:var(--nwa);border:2px solid var(--rouge);color:var(--rouge);width:44px;height:44px;border-radius:50%;font-size:18px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.5);transition:all .2s" title="Admin">⚙</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <div class="adm-box">
+    <div class="adm-card">
+      <div class="adm-hdr">
+        <div>
+          <div class="adm-logo">PEJAM TV</div>
+          <div class="adm-sub">ADMIN PANEL</div>
+        </div>
+        <button class="adm-x" onclick="closeAdmin()">✕</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="adminLogin" class="adm-body">
+        <div class="adm-t">🔒 Konekte</div>
+        <div class="adm-d">Antre modpas admin pou jwenn aksè</div>
+        <div class="adm-fg">
+          <input type="password" id="adminPass" class="adm-input" placeholder="Modpas..." onkeypress="if(event.key==='Enter')checkAdminPass()">
+        </div>
+        <button class="adm-btn" onclick="checkAdminPass()">Konekte →</button>
+        <div id="adminErr" class="adm-err">❌ Modpas enkòrèk. Eseye ankò.</div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div id="adminDash" style="display:none">
+        <div class="adm-body">
+          <div class="adm-t">📊 Dashboard</div>
+          <div class="adm-d">Jere notifikasyon PEJAM TV ou yo</div>
+          <div class="adm-stats">
+            <div class="adm-stat">
+              <div class="adm-stat-n" id="statSubs">—</div>
+              <div class="adm-stat-l">Abòne</div>
+            </div>
+            <div class="adm-stat">
+              <div class="adm-stat-n" id="statSent">0</div>
+              <div class="adm-stat-l">Notif voye</div>
+            </div>
+          </div>
+
+          <hr class="adm-divider">
+
+          <div class="adm-t" style="font-size:16px;margin-bottom:16px">🔔 Voye Notifikasyon</div>
+
+          <div class="adm-fg">
+            <label class="adm-label">Tit Nouvèl *</label>
+            <input type="text" id="pushTitle" class="adm-input" placeholder="Ex: PEJAM TV — Breaking News">
+          </div>
+          <div class="adm-fg">
+            <label class="adm-label">Mesaj *</label>
+            <textarea id="pushMsg" class="adm-textarea" placeholder="Ekri nouvèl ou a isit..."></textarea>
+          </div>
+          <div class="adm-fg">
+            <label class="adm-label">Lyen atik (opsyonèl)</label>
+            <input type="url" id="pushUrl" class="adm-input" placeholder="https://pejamtv.ht/atik...">
+          </div>
+          <div class="adm-fg">
+            <label class="adm-label">Imaj (opsyonèl)</label>
+            <div style="display:flex;gap:8px;margin-bottom:8px">
+              <input type="file" id="imgFile" accept="image/*" style="display:none" onchange="uploadImgBB()">
+              <button onclick="document.getElementById('imgFile').click()" style="background:#1a1a1a;border:1.5px solid #333;color:#aaa;padding:9px 14px;border-radius:4px;font-size:12px;cursor:pointer;font-family:'Source Sans 3',sans-serif;transition:all .2s;flex-shrink:0" onmouseover="this.style.borderColor='var(--rouge)'" onmouseout="this.style.borderColor='#333'">
+                📷 Chwazi Foto
+              </button>
+              <input type="url" id="pushImg" class="adm-input" placeholder="oswa kole lyen imaj la..." oninput="previewImg()" style="flex:1">
+            </div>
+            <div id="uploadStatus" style="font-size:12px;color:#aaa;display:none;margin-bottom:6px"></div>
+            <div id="imgPreview" style="display:none">
+              <img id="imgPreviewEl" src="" style="width:100%;max-height:150px;object-fit:cover;border-radius:4px;border:1px solid #333">
+            </div>
+          </div>
+
+          <button class="adm-btn" id="sendPushBtn" onclick="sendPush()">
+            🔔 Voye Bay Tout Abòne
+          </button>
+          <div id="pushResult" class="adm-result"></div>
+
+          <hr class="adm-divider">
+          <button onclick="closeAdmin()" style="width:100%;background:transparent;border:1px solid #333;color:#666;padding:10px;border-radius:4px;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-size:13px">Fèmen Panel la</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
